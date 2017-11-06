@@ -1,0 +1,83 @@
+{
+  "name": "user-management",
+  "version": "0.1.0",
+  "private": true,
+  "license": "BSD-3-Clause",
+  "scripts": {
+    "format": "prettier-eslint \"src/**/*.js\" --write --trailing-comma es5",
+    "nodemon": "NODE_PATH=./src nodemon --exec babel-node src/server/server.js",
+    "webpack": "webpack -wd",
+    "start": "concurrently \"npm run webpack -s\" \"npm run nodemon -s\"",
+    "test": "jest --watch",
+    "verify-tests": "jest --coverage",
+    "build-react": "NODE_ENV=production webpack --progress -p",
+    "build-node": "babel src -d build --copy-files",
+    "build": "npm install && npm run build-react && npm run build-node",
+    "stop": "pm2 stop user-managementProd",
+    "prod": "NODE_ENV=production NODE_PATH=./build pm2 start -i max build/server/server.js --update-env --name user-managementProd",
+    "reload": "pm2 reload --update-env user-managementProd",
+    "logs": "pm2 logs user-managementProd",
+    "_reactful_commands": "_reactful_commands",
+    "precommit": "lint-staged",
+    "prepush": "verify-tests"
+  },
+  "babel": {
+    "presets": [
+      "react",
+      [
+        "env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ],
+      "stage-2"
+    ]
+  },
+  "jest": {
+    "modulePaths": [
+      "./src"
+    ]
+  },
+  "lint-staged": {
+    "*.js": [
+      "format",
+      "git add"
+    ]
+  },
+  "dependencies": {
+    "axios": "^0.17.0",
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.0.1",
+    "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "body-parser": "^1.18.2",
+    "concurrently": "^3.5.0",
+    "ejs": "^2.5.7",
+    "eslint": "^4.10.0",
+    "eslint-plugin-react": "^7.4.0",
+    "express": "^4.16.2",
+    "husky": "^0.14.3",
+    "immutable": "^3.8.2",
+    "jest": "^21.2.1",
+    "lint-staged": "^4.3.0",
+    "morgan": "^1.9.0",
+    "nodemon": "^1.12.1",
+    "pm2": "^2.7.2",
+    "prettier-eslint-cli": "^4.4.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-redux": "^5.0.6",
+    "react-test-renderer": "^16.0.0",
+    "reactful-commands": "^0.4.0",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0",
+    "serialize-javascript": "^1.4.0",
+    "webpack": "^3.8.1",
+    "webpack-chunk-hash": "^0.5.0"
+  }
+}
